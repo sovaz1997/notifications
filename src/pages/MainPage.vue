@@ -2,20 +2,20 @@
   <header class="header">
     <h1 class="title">Уведомления</h1>
     <Text block color="light" :level="2">Показано 2 изменения</Text>
-    <Notification :notification-type="1" :production-id="83101"></Notification>
   </header>
   <main>
+    <NotificationList></NotificationList>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
-import Notification from '@/components/Notification/Notification.vue';
+import NotificationList from '@/components/NotificationList.vue';
 
 export default defineComponent({
   name: 'MainPage',
-  components: { Notification, Text },
+  components: { NotificationList, Text },
 });
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="notification">
+  <div class="notification" :class="{ 'notification--first': first, 'notification--last': last }">
     <component v-if="iconComponent" :is="iconComponent"></component>
     <div class="notification__info">
       <Text class="notification__title" :level="1" bold block color="dark">{{ title }}</text>
@@ -28,7 +28,15 @@ export default defineComponent({
     productionId: {
       required: true,
       type: Number,
-    }
+    },
+    first: {
+      default: false,
+      type: Boolean,
+    },
+    last: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -52,13 +60,13 @@ export default defineComponent({
     };
 
     this.iconComponent = iconComponents[notification.code];
-
-    console.log(this.iconComponent);
   },
 });
 </script>
 
 <style scoped lang="scss">
+$border-radius: 15px;
+
 .notification {
   background: #FCFDFE;
   padding: 20px 30px;
@@ -69,5 +77,17 @@ export default defineComponent({
   &__title {
     margin-bottom: 4px;
   }
+
+  &--first {
+    border-radius: $border-radius $border-radius 0 0;
+  }
+
+  &--last {
+    border-radius: 0 0 $border-radius $border-radius;
+  }
+}
+
+.notification--first.notification--last {
+  border-radius: $border-radius $border-radius;
 }
 </style>
