@@ -1,10 +1,13 @@
 <template>
   <div class="notification" :class="{ 'notification--first': first, 'notification--last': last }">
-    <component v-if="iconComponent" :is="iconComponent"></component>
-    <div class="notification__info">
-      <Text class="notification__title" :level="1" bold block color="dark">{{ title }}</text>
-      <Text :level="2" block color="light">{{ subtitle }}</text>
+    <div class="notification__left">
+      <component v-if="iconComponent" :is="iconComponent"></component>
+      <div class="notification__info">
+        <Text class="notification__title" :level="1" bold block color="dark">{{ title }}</text>
+        <Text :level="2" block color="light">{{ subtitle }}</text>
+      </div>
     </div>
+    <Button>{{ buttonTitle }}</Button>
   </div>
 </template>
 
@@ -16,35 +19,23 @@ import NewLocation from '@/components/icons/NewLocation.vue';
 import NewCat from '@/components/icons/NewCat.vue';
 import NotFound from '@/components/icons/NotFound.vue';
 import Cleaned from '@/components/icons/Cleaned.vue';
+import Button from '@/components/Button.vue';
 
 export default defineComponent({
   name: 'Notification',
-  components: { NewLocation, Text, NewCat, NotFound, Cleaned },
+  components: { Button, NewLocation, Text, NewCat, NotFound, Cleaned },
+
+  emits: ['toggleRead'],
+
   props: {
-    notificationType: {
-      required: true,
-      type: Number,
-    },
-    productionId: {
-      required: true,
-      type: Number,
-    },
-    first: {
-      default: false,
-      type: Boolean,
-    },
-    last: {
-      default: false,
-      type: Boolean,
-    },
+    id: { required: true, type: String },
+    notificationType: { required: true, type: Number },
+    productionId: { required: true, type: Number },
+    first: { default: false, type: Boolean },
+    last: { default: false, type: Boolean },
+    unread: { required: true },
   },
-  data() {
-    return {
-      title: '',
-      subtitle: '',
-      iconComponent: '',
-    }
-  },
+
   async created() {
     const notification = await api.getNotificationType(this.notificationType);
     this.title = notification.description;
@@ -61,6 +52,26 @@ export default defineComponent({
 
     this.iconComponent = iconComponents[notification.code];
   },
+
+  data() {
+    return {
+      title: '',
+      subtitle: '',
+      iconComponent: '',
+    }
+  },
+
+  computed: {
+    buttonTitle() {
+      return this.unread ? 'Прочитать' : 'Отметить непрочитанным';
+    },
+  },
+
+  methods: {
+    toggleRead() {
+      this.$emit('toggleRead', this.id);
+    }
+  },
 });
 </script>
 
@@ -70,9 +81,17 @@ $border-radius: 15px;
 .notification {
   background: #FCFDFE;
   padding: 20px 30px;
+  box-sizing: border-box;
   border: 1px solid #E4EBF4;
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+
+  &__left {
+    display: flex;
+    gap: 16px;
+  }
 
   &__title {
     margin-bottom: 4px;

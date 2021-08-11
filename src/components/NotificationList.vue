@@ -5,7 +5,7 @@
         :key="notification.id"
         :first="notificationIsFirst(i)"
         :last="notificationIsLast(i)"
-        :notification-type="1"
+        :notification-type="notification.type"
         :production-id="83101"
     ></Notification>
   </div>
@@ -20,9 +20,10 @@ export default defineComponent({
   data() {
     return {
       notifications: [
-        { id: '1', },
-        { id: '3', },
-        { id: '2', },
+        { id: '1', type: 1 },
+        { id: '3', type: 2 },
+        { id: '2', type: 3 },
+        { id: '2', type: 4 },
       ],
     };
   },
@@ -37,7 +38,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .notification-list {
   & > * {
     margin-bottom: -1px;
