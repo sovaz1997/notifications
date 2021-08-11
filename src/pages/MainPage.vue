@@ -1,7 +1,8 @@
 <template>
   <header class="header">
     <h1 class="title">Уведомления</h1>
-    <Text block color="light" level="2">Показано 2 изменения</Text>
+    <Text block color="light" :level="2">Показано 2 изменения</Text>
+    <Notification :notification-type="1" :production-id="83101"></Notification>
   </header>
   <main>
   </main>
@@ -10,10 +11,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
+import Notification from '@/components/Notification/Notification.vue';
 
 export default defineComponent({
   name: 'MainPage',
-  components: { Text },
+  components: { Notification, Text },
 });
 </script>
 

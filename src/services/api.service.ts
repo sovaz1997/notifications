@@ -1,40 +1,37 @@
 import axios from 'axios';
 import { NotificationTypeModel } from '@/models/notificationTypeModel';
 import { ProductionCategoryModel } from '@/models/production-category.model';
-
-const memoize = <T>(fn: () => Promise<T>): () => Promise<T> => {
-  let result: T | null = null;
-
-  return () => {
-    return new Promise((resolve) => {
-      if (result) {
-        resolve(result)
-      } else {
-        fn().then((result) => {
-          resolve(result);
-        })
-      }
-    });
-  };
-};
+import { memoize } from '@/utils/memoize';
 
 class ApiService {
   private getNotificationTypes = memoize(async () => {
-    return (await axios.get<NotificationTypeModel[]>('https://e-tag.pro/testjob/cases.json')).data;
+    return (await axios.get<NotificationTypeModel[]>('cases.json')).data;
   });
 
   private getProductionCategories = memoize(async () => {
-    return (await axios.get<ProductionCategoryModel[]>('https://e-tag.pro/testjob/list.json')).data;
+    return (await axios.get<ProductionCategoryModel[]>('list.json')).data;
   });
 
-  public async getNotificationType(id: number) {
+  public async getNotificationType(id: number): Promise<NotificationTypeModel> {
     const types = await this.getNotificationTypes();
-    return types.find((type) => type.id === id);
+    const res = types.find((type) => type.id === id);
+
+    if (!res) {
+      throw new Error('Notification type not found!');
+    }
+
+    return res;
   }
 
-  public async getProductionCategory(id: number) {
+  public async getProductionCategory(id: number): Promise<ProductionCategoryModel> {
     const categories = await this.getProductionCategories();
-    return categories.find((category) => category.id === id);
+    const res = categories.find((category) => category.id === id);
+
+    if (!res) {
+      throw new Error('Production category not found!');
+    }
+
+    return res;
   }
 }
 
