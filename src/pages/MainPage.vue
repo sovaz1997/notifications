@@ -1,7 +1,10 @@
 <template>
-  <h1 class="title">Уведомления</h1>
-  <span class="notifications-info">Показано 7 уведомлений</span>
-  <Text color="light" bold block>1233</Text>
+  <header class="header">
+    <h1 class="title">Уведомления</h1>
+    <Text block color="light" level="2">Показано 2 изменения</Text>
+  </header>
+  <main>
+  </main>
 </template>
 
 <script lang="ts">
@@ -13,3 +16,18 @@ export default defineComponent({
   components: { Text },
 });
 </script>
+
+<style lang="scss">
+@import "src/assets/styles/index";
+
+.title {
+  font-size: 30px;
+  line-height: 32px;
+  color: $dark-text-color;
+  margin: 0 0 6px 0;
+}
+
+.header {
+  padding: 21px 0 21px 0;
+}
+</style>

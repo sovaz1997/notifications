@@ -14,8 +14,8 @@ export default defineComponent({
 });
 </script>
 
-<!--<style lang="scss">-->
-<!--#app {-->
-<!--  font-family: Avenir, Helvetica, Arial, sans-serif;-->
-<!--}-->
-<!--</style>-->
+<style lang="scss">
+#app {
+  font-family: "Nunito Sans", sans-serif;
+}
+</style>
