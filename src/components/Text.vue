@@ -1,9 +1,12 @@
 <template>
-  <span :class="textClass"></span>
+  <span :class="textClass">
+    <slot></slot>
+  </span>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import classnames from 'classnames';
 
 export default defineComponent({
   props: {
@@ -18,11 +21,22 @@ export default defineComponent({
     color: {
       type: String,
       default: 'dark',
+    },
+    block: {
+      type: Boolean,
+      default: false,
     }
   },
   computed: {
     textClass() {
-      return `text--${ this.level } text--${ color }`;
+      return classnames([
+          `text--${ this.level }`,
+          `text--${ this.color }`,
+        {
+          'text--block': this.block,
+          'text--bold': this.bold,
+        }
+      ]);
     },
   }
 })
@@ -32,8 +46,6 @@ export default defineComponent({
 @import "src/assets/styles/index";
 
 .text {
-  color: $dark-text-color;
-
   &--1 {
     font-size: 14px;
     line-height: 16px;
@@ -47,8 +59,17 @@ export default defineComponent({
   &--light {
     color: $light-text-color;
   }
-}
-.text-1 {
 
+  &--dark {
+    color: $dark-text-color;
+  }
+
+  &--bold {
+    font-weight: bold;
+  }
+
+  &--block {
+    display: block;
+  }
 }
 </style>
