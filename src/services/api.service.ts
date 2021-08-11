@@ -4,11 +4,11 @@ import { ProductionCategoryModel } from '@/models/production-category.model';
 import { memoize } from '@/utils/memoize';
 
 class ApiService {
-  private getNotificationTypes = memoize(async () => {
+  public getNotificationTypes: () => Promise<NotificationTypeModel[]> = memoize(async () => {
     return (await axios.get<NotificationTypeModel[]>('cases.json')).data;
   });
 
-  private getProductionCategories = memoize(async () => {
+  private getProductionCategories: () => Promise<ProductionCategoryModel[]> = memoize(async () => {
     return (await axios.get<ProductionCategoryModel[]>('list.json')).data;
   });
 
