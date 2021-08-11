@@ -1,6 +1,6 @@
 <template>
   <button @click="onClick" class="button">
-    <Text color="light" level="1"><slot></slot></Text>
+    <Text color="light" :level="1"><slot></slot></Text>
   </button>
 </template>
 

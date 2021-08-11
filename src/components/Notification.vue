@@ -1,9 +1,12 @@
 <template>
-  <div class="notification" :class="{ 'notification--first': first, 'notification--last': last }">
+  <div
+    class="notification"
+    :class="{ 'notification--first': first, 'notification--last': last, 'notification--unread': unread }"
+  >
     <div class="notification__left">
       <component v-if="iconComponent" :is="iconComponent"></component>
       <div class="notification__info">
-        <Text class="notification__title" :level="1" bold block color="dark">{{ title }}</text>
+        <Text class="notification__title" :level="1" :bold="unread" block color="dark">{{ title }}</text>
         <Text :level="2" block color="light">{{ subtitle }}</text>
       </div>
     </div>
@@ -79,7 +82,7 @@ export default defineComponent({
 $border-radius: 15px;
 
 .notification {
-  background: #FCFDFE;
+  background: #FFFFFF;
   padding: 20px 30px;
   box-sizing: border-box;
   border: 1px solid #E4EBF4;
@@ -87,6 +90,10 @@ $border-radius: 15px;
   justify-content: space-between;
   align-items: center;
   height: 80px;
+
+  &--unread {
+    background: #FCFDFE;
+  }
 
   &__left {
     display: flex;

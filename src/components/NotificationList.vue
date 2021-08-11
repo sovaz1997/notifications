@@ -3,10 +3,12 @@
     <Notification
         v-for="(notification, i) in notifications"
         :key="notification.id"
+        :id="notification.id"
         :first="notificationIsFirst(i)"
         :last="notificationIsLast(i)"
         :notification-type="notification.type"
         :production-id="83101"
+        :unread="i % 2 === 0"
     ></Notification>
   </div>
 </template>
