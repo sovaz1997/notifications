@@ -25,7 +25,7 @@ export default defineComponent({
 .title {
   font-size: 30px;
   line-height: 32px;
-  color: $dark-text-color;
+  color: $dark-base-color;
   margin: 0 0 6px 0;
 }
 

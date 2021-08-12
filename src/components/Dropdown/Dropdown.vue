@@ -1,11 +1,19 @@
 <template>
   <div class="dropdown" ref="target">
     <transition name="fade">
-    <div class="dropdown__field" :class="{ 'dropdown__field--hidden': opened }" @click="toggleOpen">
-      <Text v-if="selectedOption" :level="1" color="dark">{{ selectedOptionText }}</Text>
-      <Text v-else :level="1" color="light">{{ placeholder }}</Text>
-      <ArrowDown></ArrowDown>
-    </div>
+      <div class="dropdown__top">
+        <div class="dropdown__field" :class="{ 'dropdown__field--selected': selectedOption }" @click="toggleOpen">
+          <Text v-if="selectedOption" :level="1" :color="selectedOption ? 'purple' : 'dark'">{{
+              selectedOptionText
+            }}
+          </Text>
+          <Text v-else :level="1" color="light">{{ placeholder }}</Text>
+          <ArrowDown></ArrowDown>
+        </div>
+        <div class="dropdown__reset-button" v-if="selectedOption" @click="removeSelection">
+          <Text :level="2" color="light">Сбросить</Text>
+        </div>
+      </div>
     </transition>
     <transition name="fade">
       <div class="dropdown__options" v-if="opened" v-click-outside="toggleOpen">
@@ -63,12 +71,17 @@ export default defineComponent({
     selectOption(option: DropdownOption) {
       this.toggleOpen();
       this.selectedOption = option.key;
+    },
+    removeSelection() {
+      this.selectedOption = null;
     }
   }
 });
 </script>
 
 <style scoped lang="scss">
+@import "src/assets/styles/index";
+
 $border-radius: 15px;
 
 .dropdown {
@@ -85,9 +98,20 @@ $border-radius: 15px;
     align-items: center;
     gap: 12px;
 
-    &--hidden {
-      opacity: 0;
+    &--selected {
+      border: 1px solid $purple-base-color;
     }
+  }
+
+
+  &__top {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  &__reset-button {
+    cursor: pointer;
   }
 
   &__option {
@@ -99,16 +123,17 @@ $border-radius: 15px;
     background-color: #FFFFFF;
     border-radius: $border-radius;
     position: absolute;
-    left: 0;
-    top: 0;
+    bottom: 0;
+    transform: translate(0, 100%);
     z-index: 99;
     box-shadow: 0 10px 20px rgba(186, 197, 211, 0.15);
     border: 1px solid #E4EBF4;
   }
 
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .2s;
+    transition: opacity .6s;
   }
+
   .fade-enter-from, .fade-leave-to {
     opacity: 0;
   }

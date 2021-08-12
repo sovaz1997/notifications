@@ -57,11 +57,15 @@ export default defineComponent({
   }
 
   &--light {
-    color: $light-text-color;
+    color: $light-base-color;
   }
 
   &--dark {
-    color: $dark-text-color;
+    color: $dark-base-color;
+  }
+
+  &--purple {
+    color: $purple-base-color;
   }
 
   &--bold {
