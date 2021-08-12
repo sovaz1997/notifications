@@ -4,6 +4,9 @@ import { ProductionCategoryModel } from '@/models/production-category.model';
 import { memoize } from '@/utils/memoize';
 import { NotificationModel } from '@/models/notification.model';
 import { getDefaultNotifications } from '@/services/get-default-data';
+import { useLocalstorage } from '@/utils/localstorage';
+
+const enum LOCALSTORAGE_KEYS { NOTIFICATIONS = 'notifications' };
 
 class ApiService {
   public getNotificationTypes: () => Promise<NotificationTypeModel[]> = memoize(async () => {
@@ -36,9 +39,43 @@ class ApiService {
     return res;
   }
 
-  public async getProductions(): Promise<NotificationModel[]> {
+  public getNotifications(): Promise<NotificationModel[]> {
     return new Promise((res, rej) => {
-      res(getDefaultNotifications());
+      const [dataGetter, setData] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS);
+      const data = dataGetter();
+
+
+      if (!data) {
+        setData(getDefaultNotifications());
+      }
+
+      if (data) {
+        res(data);
+      } else {
+        rej('No data');
+      }
+    });
+  }
+
+  public readOrSetUnread(id: string, unread: boolean): Promise<unknown> {
+    return new Promise((res, rej) => {
+      const [dataGetter, setData] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS);
+      const data = dataGetter();
+
+      if (!data) {
+        throw new Error('No data');
+      }
+
+      const notificationIndex = data.findIndex((notification) => notification.id === id);
+
+      if (notificationIndex === -1) {
+        throw new Error(`Notification with id ${ id } not found`);
+      }
+
+      data[notificationIndex].unread = unread;
+
+      setData(data);
+      res('success');
     });
   }
 }

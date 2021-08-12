@@ -44,7 +44,7 @@ export default defineComponent({
       return index === this.notifications.length - 1;
     },
     async loadNotifications() {
-      this.notifications = await api.getProductions();
+      this.notifications = await api.getNotifications();
     }
   },
 
