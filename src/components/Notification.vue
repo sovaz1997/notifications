@@ -10,7 +10,7 @@
         <Text :level="2" block color="light">{{ subtitle }}</text>
       </div>
     </div>
-    <Button>{{ buttonTitle }}</Button>
+    <Button @click="toggleRead">{{ buttonTitle }}</Button>
   </div>
 </template>
 
@@ -72,7 +72,7 @@ export default defineComponent({
 
   methods: {
     toggleRead() {
-      this.$emit('toggleRead', this.id);
+      this.$emit('toggleRead', { id: this.id, unread: !this.unread });
     }
   },
 });

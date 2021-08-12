@@ -41,31 +41,15 @@ class ApiService {
 
   public getNotifications(): Promise<NotificationModel[]> {
     return new Promise((res, rej) => {
-      const [dataGetter, setData] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS);
-      const data = dataGetter();
-
-
-      if (!data) {
-        setData(getDefaultNotifications());
-      }
-
-      if (data) {
-        res(data);
-      } else {
-        rej('No data');
-      }
+      const [dataGetter] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS, getDefaultNotifications());
+      res(dataGetter());
     });
   }
 
-  public readOrSetUnread(id: string, unread: boolean): Promise<unknown> {
+  public readOrSetUnread(id: string, unread: boolean): Promise<NotificationModel> {
     return new Promise((res, rej) => {
-      const [dataGetter, setData] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS);
+      const [dataGetter, setData] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS, getDefaultNotifications());
       const data = dataGetter();
-
-      if (!data) {
-        throw new Error('No data');
-      }
-
       const notificationIndex = data.findIndex((notification) => notification.id === id);
 
       if (notificationIndex === -1) {
@@ -75,7 +59,7 @@ class ApiService {
       data[notificationIndex].unread = unread;
 
       setData(data);
-      res('success');
+      res(data[notificationIndex]);
     });
   }
 }

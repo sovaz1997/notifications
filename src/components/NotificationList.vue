@@ -13,6 +13,7 @@
         :notification-type="notification.type"
         :production-category="notification.productionCategory"
         :unread="notification.unread"
+        @toggle-read="readNotification($event)"
     ></Notification>
   </div>
 </template>
@@ -45,6 +46,14 @@ export default defineComponent({
     },
     async loadNotifications() {
       this.notifications = await api.getNotifications();
+    },
+    async readNotification({ id, unread }: { id: string, unread: boolean }) {
+      const updatedNotification = await api.readOrSetUnread(id, unread);
+      const replacedNotificationIndex = this.notifications.findIndex((notification) => id === notification.id);
+
+      if (replacedNotificationIndex !== -1) {
+        this.notifications[replacedNotificationIndex] = updatedNotification;
+      }
     }
   },
 

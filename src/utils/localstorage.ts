@@ -1,12 +1,13 @@
-export const useLocalstorage = <T>(key: string): [() => T | null, (value: T) => void] => {
-  let data: T | null = null;
+export const useLocalstorage = <T>(key: string, defaultValue: T): [() => T, (value: T) => void] => {
+  let data: T = defaultValue;
+
   try {
     const localstorageValue = window.localStorage.getItem(key);
     if (localstorageValue) {
       data = JSON.parse(localstorageValue);
     }
   } catch {
-    data = null;
+    data = defaultValue;
   }
 
   return [
