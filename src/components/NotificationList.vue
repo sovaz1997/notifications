@@ -1,5 +1,8 @@
 <template>
-  <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+  <div class="notification-list-controls">
+    <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+    <Refresh class="refresh-button"></Refresh>
+  </div>
   <div class="notification-list">
     <Notification
         v-for="(notification, i) in notifications"
@@ -20,9 +23,10 @@ import Notification from '@/components/Notification.vue';
 import Dropdown from '@/components/Dropdown/Dropdown.vue';
 import { api } from '@/services/api.service';
 import { DropdownOption } from '@/components/Dropdown/models';
+import Refresh from '@/components/icons/Refresh.vue';
 
 export default defineComponent({
-  components: { Dropdown, Notification },
+  components: { Refresh, Dropdown, Notification },
 
   data() {
     return {
@@ -58,5 +62,16 @@ export default defineComponent({
   & > * {
     margin-bottom: -1px;
   }
+}
+
+.notification-list-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.refresh-button {
+  cursor: pointer;
 }
 </style>

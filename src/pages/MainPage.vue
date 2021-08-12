@@ -1,11 +1,13 @@
 <template>
-  <header class="header">
-    <h1 class="title">Уведомления</h1>
-    <Text block color="light" :level="2">Показано 2 изменения</Text>
-  </header>
-  <main>
-    <NotificationList></NotificationList>
-  </main>
+  <div class="wrapper">
+    <header class="header">
+      <h1 class="title">Уведомления</h1>
+      <Text block color="light" :level="2">Показано 2 изменения</Text>
+    </header>
+    <main class="container">
+      <NotificationList></NotificationList>
+    </main>
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,5 +33,12 @@ export default defineComponent({
 
 .header {
   padding: 21px 0 21px 0;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  max-width: 1416px;
+  min-width: 320px;
+  padding: 0 20px;
 }
 </style>
