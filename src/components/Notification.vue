@@ -33,7 +33,7 @@ export default defineComponent({
   props: {
     id: { required: true, type: String },
     notificationType: { required: true, type: Number },
-    productionId: { required: true, type: Number },
+    productionCategory: { required: true, type: Number },
     first: { default: false, type: Boolean },
     last: { default: false, type: Boolean },
     unread: { required: true },
@@ -43,8 +43,8 @@ export default defineComponent({
     const notification = await api.getNotificationType(this.notificationType);
     this.title = notification.description;
 
-    const productionType = await api.getProductionCategory(this.productionId);
-    this.subtitle = `${ productionType.cat } (ID ${ this.productionId })`;
+    const productionType = await api.getProductionCategory(this.productionCategory);
+    this.subtitle = `${ productionType.cat } (ID ${ this.productionCategory })`;
 
     const iconComponents: Record<string, string> = {
       newcat: 'NewCat',

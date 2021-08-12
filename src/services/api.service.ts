@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { NotificationTypeModel } from '@/models/notificationTypeModel';
+import { NotificationTypeModel } from '@/models/notification-type.model';
 import { ProductionCategoryModel } from '@/models/production-category.model';
 import { memoize } from '@/utils/memoize';
+import { NotificationModel } from '@/models/notification.model';
+import { getDefaultNotifications } from '@/services/get-default-data';
 
 class ApiService {
   public getNotificationTypes: () => Promise<NotificationTypeModel[]> = memoize(async () => {
@@ -17,7 +19,7 @@ class ApiService {
     const res = types.find((type) => type.id === id);
 
     if (!res) {
-      throw new Error('Notification type not found!');
+      throw new Error(`Notification type ${ id } not found!`);
     }
 
     return res;
@@ -28,10 +30,16 @@ class ApiService {
     const res = categories.find((category) => category.id === id);
 
     if (!res) {
-      throw new Error('Production category not found!');
+      throw new Error(`Production category ${ id } not found!`);
     }
 
     return res;
+  }
+
+  public async getProductions(): Promise<NotificationModel[]> {
+    return new Promise((res, rej) => {
+      res(getDefaultNotifications());
+    });
   }
 }
 

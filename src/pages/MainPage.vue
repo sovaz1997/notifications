@@ -40,5 +40,6 @@ export default defineComponent({
   max-width: 1416px;
   min-width: 320px;
   padding: 0 20px;
+  margin: 0 auto;
 }
 </style>
