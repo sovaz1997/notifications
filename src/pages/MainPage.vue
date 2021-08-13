@@ -2,13 +2,17 @@
   <div class="wrapper">
     <header class="header">
       <h1 class="title">Уведомления</h1>
-      <Text block color="light" :level="2">
+      <Text v-if="!loading" block color="light" :level="2">
         Показано {{ changesText }}
       </Text>
     </header>
-    <main class="container">
-      <NotificationList></NotificationList>
-    </main>
+    <div class="loading-wrapper">
+      <WithLoading :loading="loading">
+        <main class="container">
+          <NotificationList></NotificationList>
+        </main>
+      </WithLoading>
+    </div>
   </div>
 </template>
 
@@ -17,9 +21,10 @@ import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
 import NotificationList from '@/components/NotificationList.vue';
 import { pluralize } from '@/utils/pluralize';
+import WithLoading from '@/components/WithLoading.vue';
 
 export default defineComponent({
-  components: { NotificationList, Text },
+  components: { WithLoading, NotificationList, Text },
 
   data() {
     return {
@@ -32,7 +37,7 @@ export default defineComponent({
     changesText() {
       return `${ this.changes } изменени${ pluralize(['е', 'я', 'й'], this.changes) }`;
     },
-  }
+  },
 });
 </script>
 
@@ -56,5 +61,12 @@ export default defineComponent({
   min-width: 320px;
   padding: 0 20px;
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-wrapper {
+  flex-grow: 1;
 }
 </style>

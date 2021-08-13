@@ -15,7 +15,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+html {
+  overflow: hidden;
+}
 #app {
   font-family: "Nunito Sans", sans-serif;
+  height: 100vh;
 }
 </style>
