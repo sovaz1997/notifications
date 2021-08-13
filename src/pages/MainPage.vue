@@ -2,7 +2,9 @@
   <div class="wrapper">
     <header class="header">
       <h1 class="title">Уведомления</h1>
-      <Text block color="light" :level="2">Показано 2 изменения</Text>
+      <Text block color="light" :level="2">
+        Показано {{ changesText }}
+      </Text>
     </header>
     <main class="container">
       <NotificationList></NotificationList>
@@ -14,10 +16,23 @@
 import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
 import NotificationList from '@/components/NotificationList.vue';
+import { pluralize } from '@/utils/pluralize';
 
 export default defineComponent({
-  name: 'MainPage',
   components: { NotificationList, Text },
+
+  data() {
+    return {
+      changes: 2,
+      loading: false,
+    };
+  },
+
+  computed: {
+    changesText() {
+      return `${ this.changes } изменени${ pluralize(['е', 'я', 'й'], this.changes) }`;
+    },
+  }
 });
 </script>
 

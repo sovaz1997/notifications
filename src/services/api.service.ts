@@ -5,6 +5,7 @@ import { memoize } from '@/utils/memoize';
 import { NotificationModel } from '@/models/notification.model';
 import { getDefaultNotifications } from '@/services/get-default-data';
 import { useLocalstorage } from '@/utils/localstorage';
+import { pluralize } from '@/utils/pluralize';
 
 const enum LOCALSTORAGE_KEYS { NOTIFICATIONS = 'notifications' };
 
@@ -65,3 +66,10 @@ class ApiService {
 }
 
 export const api = new ApiService();
+
+for (let i = 0; i < 1000; i++) {
+  console.log({
+    i,
+    pluralize: pluralize(['изменение', 'изменения', 'изменений'], i),
+  });
+}
