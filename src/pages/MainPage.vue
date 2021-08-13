@@ -7,34 +7,30 @@
       </Text>
     </header>
     <div class="loading-wrapper">
-      <WithLoading :loading="loading">
-        <main class="container">
-          <NotificationList></NotificationList>
-        </main>
-      </WithLoading>
+        <NotificationList v-model:loading="loading"></NotificationList>
     </div>
   </div>
 </template>
+
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
 import NotificationList from '@/components/NotificationList.vue';
 import { pluralize } from '@/utils/pluralize';
-import WithLoading from '@/components/WithLoading.vue';
 
 export default defineComponent({
-  components: { WithLoading, NotificationList, Text },
+  components: { NotificationList, Text },
 
   data() {
     return {
       changes: 2,
-      loading: false,
+      loading: true,
     };
   },
 
   computed: {
-    changesText() {
+    changesText(): string {
       return `${ this.changes } изменени${ pluralize(['е', 'я', 'й'], this.changes) }`;
     },
   },

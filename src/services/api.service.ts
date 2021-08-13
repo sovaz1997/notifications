@@ -43,7 +43,9 @@ class ApiService {
   public getNotifications(): Promise<NotificationModel[]> {
     return new Promise((res, rej) => {
       const [dataGetter] = useLocalstorage<NotificationModel[]>(LOCALSTORAGE_KEYS.NOTIFICATIONS, getDefaultNotifications());
-      res(dataGetter());
+      setTimeout(() => {
+        res(dataGetter());
+      }, 1000)
     });
   }
 

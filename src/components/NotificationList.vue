@@ -1,21 +1,23 @@
 <template>
-  <div class="notification-list-controls">
-    <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
-    <Refresh class="refresh-button"></Refresh>
-  </div>
-  <div class="notification-list">
-    <Notification
-        v-for="(notification, i) in notifications"
-        :key="notification.id"
-        :id="notification.id"
-        :first="notificationIsFirst(i)"
-        :last="notificationIsLast(i)"
-        :notification-type="notification.type"
-        :production-category="notification.productionCategory"
-        :unread="notification.unread"
-        @toggle-read="readNotification($event)"
-    ></Notification>
-  </div>
+  <WithLoading :loading="loading">
+    <div class="notification-list-controls">
+      <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+      <Refresh class="refresh-button"></Refresh>
+    </div>
+    <div class="notification-list">
+      <Notification
+          v-for="(notification, i) in notifications"
+          :key="notification.id"
+          :id="notification.id"
+          :first="notificationIsFirst(i)"
+          :last="notificationIsLast(i)"
+          :notification-type="notification.type"
+          :production-category="notification.productionCategory"
+          :unread="notification.unread"
+          @toggle-read="readNotification($event)"
+      ></Notification>
+    </div>
+  </WithLoading>
 </template>
 
 <script lang="ts">
@@ -26,16 +28,20 @@ import { api } from '@/services/api.service';
 import { DropdownOption } from '@/components/Dropdown/models';
 import Refresh from '@/components/icons/Refresh.vue';
 import { NotificationModel } from '@/models/notification.model';
+import WithLoading from '@/components/WithLoading.vue';
 
 export default defineComponent({
-  components: { Refresh, Dropdown, Notification },
+  components: { WithLoading, Refresh, Dropdown, Notification },
 
   data() {
     return {
       notifications: [] as NotificationModel[],
       dropdownOptions: [] as DropdownOption[],
+      loading: true,
     };
   },
+
+  emits: ['update:loading'],
 
   methods: {
     notificationIsFirst(index: number) {
@@ -58,10 +64,18 @@ export default defineComponent({
   },
 
   async created() {
+    this.loading = true;
     const notificationTypes = await api.getNotificationTypes();
     this.dropdownOptions = notificationTypes.map((type) => ({ key: type.id.toString(), value: type.name }));
-    this.loadNotifications();
+    await this.loadNotifications();
+    this.loading = false;
   },
+
+  watch: {
+    loading() {
+      this.$emit('update:loading');
+    }
+  }
 });
 </script>
 
