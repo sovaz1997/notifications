@@ -2,7 +2,7 @@
   <WithLoading :loading="loading">
     <div>
       <div class="notification-list-controls">
-        <Dropdown v-model="notificationType" :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+        <Dropdown class="notification-list-controls__dropdown" v-model="notificationType" :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
         <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
       <div class="notification-list">
@@ -107,6 +107,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/index";
+
 .notification-list {
   & .notifications__notification {
     margin-bottom: -1px;
@@ -118,6 +120,14 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  &__dropdown {
+    @include size-phone {
+      width: 100%;
+    }
+  }
 }
 
 .refresh-button {
