@@ -2,7 +2,7 @@
   <div class="wrapper">
     <header class="header">
       <FadeTransition>
-        <h1 class="title" v-if="!loading">Уведомления</h1>
+        <h1 class="title" v-if="showTitle">Уведомления</h1>
       </FadeTransition>
       <FadeTransition>
         <Text v-if="!loading" block color="light" :level="2">
@@ -32,6 +32,7 @@ export default defineComponent({
     return {
       changes: 0,
       loading: true,
+      showTitle: true,
     };
   },
 
@@ -44,6 +45,20 @@ export default defineComponent({
   methods: {
     changeNotificationCount(value: number) {
       this.changes = value;
+    }
+  },
+
+  watch: {
+    loading(value) {
+      if (value) {
+        this.showTitle = false;
+
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.showTitle = true;
+          }, 300);
+        });
+      }
     }
   }
 });
