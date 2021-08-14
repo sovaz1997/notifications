@@ -1,6 +1,5 @@
 <template>
   <div class="dropdown" ref="target">
-    <transition name="fade">
       <div class="dropdown__top">
         <div class="dropdown__field" :class="{ 'dropdown__field--selected': selectedOption }" @click="toggleOpen">
           <Text v-if="selectedOption" :level="1" :color="selectedOption ? 'purple' : 'dark'">{{
@@ -14,14 +13,13 @@
           <Text :level="2" color="light">Сбросить</Text>
         </div>
       </div>
-    </transition>
-    <transition name="fade">
+    <FadeTransition>
       <div class="dropdown__options" v-if="opened" v-click-outside="toggleOpen">
         <div class="dropdown__option" v-for="option in options" :key="option.key" @click="selectOption(option)">
           <Text color="dark" :level="1">{{ option.value }}</Text>
         </div>
       </div>
-    </transition>
+    </FadeTransition>
   </div>
 </template>
 
@@ -31,9 +29,10 @@ import Text from '@/components/Text.vue';
 import ArrowDown from '@/components/icons/ArrowDown.vue';
 import { DropdownOption } from '@/components/Dropdown/models';
 import vClickOutside from 'click-outside-vue3'
+import FadeTransition from '@/components/transitions/FadeTransition.vue';
 
 export default defineComponent({
-  components: { ArrowDown, Text },
+  components: { FadeTransition, ArrowDown, Text },
 
   directives: {
     clickOutside: vClickOutside.directive
@@ -129,14 +128,5 @@ $border-radius: 15px;
     box-shadow: 0 10px 20px rgba(186, 197, 211, 0.15);
     border: 1px solid #E4EBF4;
   }
-
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .6s;
-  }
-
-  .fade-enter-from, .fade-leave-to {
-    opacity: 0;
-  }
 }
-
 </style>

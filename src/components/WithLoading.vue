@@ -1,16 +1,19 @@
 <template>
-  <div v-if="loading" class="loading-wrapper">
-    <Text :level="1" color="light">Loading...</Text>
-  </div>
-  <slot v-else />
+  <FadeTransition>
+    <div v-if="loading" class="loading-wrapper">
+      <Text :level="1" color="light">Loading...</Text>
+    </div>
+  </FadeTransition>
+  <slot v-if="!loading" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
+import FadeTransition from '@/components/transitions/FadeTransition.vue';
 
 export default defineComponent({
-  components: { Text },
+  components: { FadeTransition, Text },
   props: {
     loading: {
       required: true,
@@ -27,5 +30,13 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 100%;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .6s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
