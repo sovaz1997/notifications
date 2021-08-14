@@ -2,7 +2,8 @@
   <WithLoading :loading="loading">
     <div>
       <div class="notification-list-controls">
-        <Dropdown class="notification-list-controls__dropdown" v-model="notificationType" :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+        <Dropdown class="notification-list-controls__dropdown" v-model="notificationType" :options="dropdownOptions"
+                  placeholder="Тип уведомления"></Dropdown>
         <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
       <div class="notification-list">
@@ -33,12 +34,13 @@ import { api } from '@/services/api.service';
 import { DropdownOption } from '@/components/Dropdown/models';
 import Refresh from '@/components/icons/Refresh.vue';
 import { NotificationModel } from '@/models/notification.model';
-import WithLoading from '@/components/WithLoading.vue';
 import { useLocalstorage } from '@/utils/localstorage';
+import WithLoading from '@/components/WithLoading.vue';
+import FadeTransition from '@/components/transitions/FadeTransition.vue';
 
 const [
-    getNotificationType,
-    setNotificationType,
+  getNotificationType,
+  setNotificationType,
 ] = useLocalstorage('filter', null);
 
 export default defineComponent({
