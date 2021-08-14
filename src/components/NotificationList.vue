@@ -8,6 +8,7 @@
       <div class="notification-list">
         <transition-group name="notifications" tag="div">
           <Notification
+              class="notifications__notification"
               v-for="(notification, i) in filteredNotifications"
               :key="notification.id"
               :id="notification.id"
@@ -107,7 +108,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .notification-list {
-  & > * {
+  & .notifications__notification {
     margin-bottom: -1px;
   }
 }

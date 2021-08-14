@@ -1,0 +1,5 @@
+@mixin size-tablet {
+  @media (max-width: 768px){
+    @content;
+  }
+}

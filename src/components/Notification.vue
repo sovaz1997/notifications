@@ -80,6 +80,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import "src/assets/styles/index";
+
 $border-radius: 15px;
 
 .notification {
@@ -90,7 +92,13 @@ $border-radius: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  min-height: 80px;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  @include size-tablet {
+    min-height: 100px;
+  }
 
   &--unread {
     background: #FCFDFE;
