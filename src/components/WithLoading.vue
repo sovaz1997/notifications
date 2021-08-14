@@ -41,5 +41,4 @@ export default defineComponent({
 .fade-only-on-show-enter-from, .fade-only-on-show-leave-to {
   opacity: 0;
 }
-
 </style>

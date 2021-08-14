@@ -69,7 +69,7 @@ export default defineComponent({
       return this.modelValue ? this.options?.find((option) => option.key === this.modelValue)?.value : '';
     },
     color() {
-      return this.modelValue ? '#754EFF' : '#8694A7'
+      return this.modelValue ? '#754EFF' : '#8694A7';
     }
   },
 
@@ -83,8 +83,32 @@ export default defineComponent({
     },
     removeSelection() {
       this.$emit('update:modelValue', null);
+    },
+    onKeyDown(e: KeyboardEvent) {
+      if (e.code === 'Escape') {
+        this.opened = false;
+      }
+    },
+    addKeydownListener() {
+      window.addEventListener('keydown', this.onKeyDown);
+    },
+    removeKeydownListener() {
+      window.removeEventListener('keydown', this.onKeyDown);
     }
   },
+
+  watch: {
+    opened(value) {
+      if (value) {
+        this.addKeydownListener();
+      } else {
+        this.removeKeydownListener();
+      }
+    }
+  },
+  unmounted() {
+    this.removeKeydownListener();
+  }
 });
 </script>
 
