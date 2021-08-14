@@ -68,10 +68,3 @@ class ApiService {
 }
 
 export const api = new ApiService();
-
-for (let i = 0; i < 1000; i++) {
-  console.log({
-    i,
-    pluralize: pluralize(['изменение', 'изменения', 'изменений'], i),
-  });
-}

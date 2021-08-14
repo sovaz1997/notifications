@@ -1,17 +1,17 @@
 <template>
-  <div
-    class="notification"
-    :class="{ 'notification--first': first, 'notification--last': last, 'notification--unread': unread }"
-  >
-    <div class="notification__left">
-      <component v-if="iconComponent" :is="iconComponent"></component>
-      <div class="notification__info">
-        <Text class="notification__title" :level="1" :bold="unread" block color="dark">{{ title }}</text>
-        <Text :level="2" block color="light">{{ subtitle }}</text>
+    <div
+        class="notification"
+        :class="{ 'notification--first': first, 'notification--last': last, 'notification--unread': unread }"
+    >
+      <div class="notification__left">
+        <component v-if="iconComponent" :is="iconComponent"></component>
+        <div class="notification__info">
+          <Text class="notification__title" :level="1" :bold="unread" block color="dark">{{ title }}</text>
+          <Text :level="2" block color="light">{{ subtitle }}</text>
+        </div>
       </div>
+      <Button @click="toggleRead">{{ buttonTitle }}</Button>
     </div>
-    <Button @click="toggleRead">{{ buttonTitle }}</Button>
-  </div>
 </template>
 
 <script lang="ts">
@@ -23,10 +23,11 @@ import NewCat from '@/components/icons/NewCat.vue';
 import NotFound from '@/components/icons/NotFound.vue';
 import Cleaned from '@/components/icons/Cleaned.vue';
 import Button from '@/components/Button.vue';
+import FadeTransition from '@/components/transitions/FadeTransition.vue';
 
 export default defineComponent({
   name: 'Notification',
-  components: { Button, NewLocation, Text, NewCat, NotFound, Cleaned },
+  components: { FadeTransition, Button, NewLocation, Text, NewCat, NotFound, Cleaned },
 
   emits: ['toggleRead'],
 

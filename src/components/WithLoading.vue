@@ -4,7 +4,9 @@
       <Text :level="1" color="light">Loading...</Text>
     </div>
   </FadeTransition>
-  <slot v-if="!loading" />
+  <FadeTransition>
+    <slot v-if="!loading" />
+  </FadeTransition>
 </template>
 
 <script lang="ts">
@@ -30,13 +32,5 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 100%;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .6s;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
 }
 </style>

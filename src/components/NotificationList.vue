@@ -1,21 +1,23 @@
 <template>
   <WithLoading :loading="loading">
-    <div class="notification-list-controls">
-      <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
-      <Refresh class="refresh-button"></Refresh>
-    </div>
-    <div class="notification-list">
-      <Notification
-          v-for="(notification, i) in notifications"
-          :key="notification.id"
-          :id="notification.id"
-          :first="notificationIsFirst(i)"
-          :last="notificationIsLast(i)"
-          :notification-type="notification.type"
-          :production-category="notification.productionCategory"
-          :unread="notification.unread"
-          @toggle-read="readNotification($event)"
-      ></Notification>
+    <div>
+      <div class="notification-list-controls">
+        <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+        <Refresh class="refresh-button"></Refresh>
+      </div>
+      <div class="notification-list">
+        <Notification
+            v-for="(notification, i) in notifications"
+            :key="notification.id"
+            :id="notification.id"
+            :first="notificationIsFirst(i)"
+            :last="notificationIsLast(i)"
+            :notification-type="notification.type"
+            :production-category="notification.productionCategory"
+            :unread="notification.unread"
+            @toggle-read="readNotification($event)"
+        ></Notification>
+      </div>
     </div>
   </WithLoading>
 </template>
@@ -73,7 +75,7 @@ export default defineComponent({
 
   watch: {
     loading() {
-      this.$emit('update:loading');
+      this.$emit('update:loading', this.loading);
     }
   }
 });

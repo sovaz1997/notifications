@@ -2,12 +2,14 @@
   <div class="wrapper">
     <header class="header">
       <h1 class="title">Уведомления</h1>
-      <Text v-if="!loading" block color="light" :level="2">
-        Показано {{ changesText }}
-      </Text>
+      <FadeTransition>
+        <Text v-if="!loading" block color="light" :level="2">
+          Показано {{ changesText }}
+        </Text>
+      </FadeTransition>
     </header>
     <div class="loading-wrapper">
-        <NotificationList v-model:loading="loading"></NotificationList>
+      <NotificationList v-model:loading="loading"></NotificationList>
     </div>
   </div>
 </template>
@@ -18,9 +20,10 @@ import { defineComponent } from 'vue';
 import Text from '@/components/Text.vue';
 import NotificationList from '@/components/NotificationList.vue';
 import { pluralize } from '@/utils/pluralize';
+import FadeTransition from '@/components/transitions/FadeTransition.vue';
 
 export default defineComponent({
-  components: { NotificationList, Text },
+  components: { FadeTransition, NotificationList, Text },
 
   data() {
     return {
