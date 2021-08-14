@@ -5,11 +5,15 @@ import { memoize } from '@/utils/memoize';
 import { NotificationModel } from '@/models/notification.model';
 import { getDefaultNotifications } from '@/services/get-default-data';
 import { useLocalstorage } from '@/utils/localstorage';
-import { pluralize } from '@/utils/pluralize';
 
-const enum LOCALSTORAGE_KEYS { NOTIFICATIONS = 'notifications' };
+const enum LOCALSTORAGE_KEYS { NOTIFICATIONS = 'notifications' }
 
 class ApiService {
+  constructor() {
+    this.getNotificationTypes();
+    this.getProductionCategories();
+  }
+
   public getNotificationTypes: () => Promise<NotificationTypeModel[]> = memoize(async () => {
     return (await axios.get<NotificationTypeModel[]>('cases.json')).data;
   });

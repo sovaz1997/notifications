@@ -4,12 +4,12 @@ export const memoize = <T>(fn: () => Promise<T>): () => Promise<T> => {
   return () => {
     return new Promise((resolve) => {
       if (result) {
-        resolve(result)
+        resolve(result);
       } else {
         fn().then((fnResult) => {
           result = fnResult;
           resolve(result);
-        })
+        });
       }
     });
   };
