@@ -34,6 +34,7 @@ import { DropdownOption } from '@/components/Dropdown/models';
 import Refresh from '@/components/icons/Refresh.vue';
 import { NotificationModel } from '@/models/notification.model';
 import WithLoading from '@/components/WithLoading.vue';
+import { useLocalstorage } from '@/utils/localstorage';
 
 export default defineComponent({
   components: { WithLoading, Refresh, Dropdown, Notification },
@@ -44,6 +45,7 @@ export default defineComponent({
       dropdownOptions: [] as DropdownOption[],
       loading: false,
       notificationType: null,
+      notificationTypeLocalStorageMethods: useLocalstorage('filter', null),
     };
   },
 
@@ -93,6 +95,7 @@ export default defineComponent({
 
   created() {
     this.reloadNotifications();
+    this.notificationType = this.notificationTypeLocalStorageMethods[0]();
   },
 
   watch: {
@@ -102,6 +105,9 @@ export default defineComponent({
     filteredNotifications() {
       this.$emit('viewedNotificationsCountChange', this.filteredNotifications.length);
     },
+    notificationType(value) {
+      this.notificationTypeLocalStorageMethods[1](value);
+    }
   }
 });
 </script>
