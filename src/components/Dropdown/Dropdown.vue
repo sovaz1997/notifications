@@ -1,18 +1,20 @@
 <template>
   <div class="dropdown" ref="target">
-      <div class="dropdown__top">
-        <div class="dropdown__field" :class="{ 'dropdown__field--selected': modelValue }" @click="toggleOpen">
-          <Text v-if="modelValue" :level="1" :color="modelValue ? 'purple' : 'dark'">{{
-              selectedOptionText
-            }}
-          </Text>
-          <Text v-else :level="1" color="light">{{ placeholder }}</Text>
-          <ArrowDown :color="color"></ArrowDown>
-        </div>
+    <div class="dropdown__top">
+      <div class="dropdown__field" :class="{ 'dropdown__field--selected': modelValue }" @click="toggleOpen">
+        <Text v-if="modelValue" :level="1" :color="modelValue ? 'purple' : 'dark'">{{
+            selectedOptionText
+          }}
+        </Text>
+        <Text v-else :level="1" color="light">{{ placeholder }}</Text>
+        <ArrowDown :color="color"></ArrowDown>
+      </div>
+      <FadeTransition>
         <div class="dropdown__reset-button" v-if="modelValue" @click="removeSelection">
           <Text :level="2" color="light">Сбросить</Text>
         </div>
-      </div>
+      </FadeTransition>
+    </div>
     <FadeTransition>
       <div class="dropdown__options" v-if="opened" v-click-outside="toggleOpen">
         <div class="dropdown__option" v-for="option in options" :key="option.key" @click="selectOption(option)">
