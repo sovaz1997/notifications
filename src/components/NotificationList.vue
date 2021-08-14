@@ -122,12 +122,6 @@ export default defineComponent({
   margin-bottom: 20px;
   gap: 20px;
   flex-wrap: wrap;
-
-  &__dropdown {
-    @include size-phone {
-      width: 100%;
-    }
-  }
 }
 
 .refresh-button {

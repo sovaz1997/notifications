@@ -61,13 +61,14 @@ export default defineComponent({
 
 .header {
   padding: 21px 0 21px 0;
-  height: 60px;
+  height: 96px;
+  box-sizing: border-box;
 }
 
 .wrapper {
   box-sizing: border-box;
   max-width: 1416px;
-  min-width: 320px;
+  min-width: 580px;
   padding: 0 20px;
   margin: 0 auto;
   height: 100%;

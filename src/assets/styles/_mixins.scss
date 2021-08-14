@@ -3,9 +3,3 @@
     @content;
   }
 }
-
-@mixin size-phone {
-  @media (max-width: 360px){
-    @content;
-  }
-}
