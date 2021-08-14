@@ -17,8 +17,16 @@
     </div>
     <FadeTransition>
       <div class="dropdown__options" v-if="opened" v-click-outside="toggleOpen">
-        <div class="dropdown__option" v-for="option in options" :key="option.key" @click="selectOption(option)">
-          <Text color="dark" :level="1">{{ option.value }}</Text>
+        <div
+            v-for="(option, i) in options" :key="option.key" @click="selectOption(option)"
+            class="dropdown__option"
+            :class="{
+              'dropdown__option--selected': modelValue === option.key,
+              'dropdown__option--top': i === 0,
+              'dropdown__option--bottom': i === options.length - 1
+            }"
+        >
+          <Text :color="modelValue === option.key ? 'purple' : 'dark'" :level="1">{{ option.value }}</Text>
         </div>
       </div>
     </FadeTransition>
@@ -131,6 +139,8 @@ $border-radius: 15px;
     align-items: center;
     gap: 12px;
 
+    @include button-color();
+
     &--selected {
       border: 1px solid $purple-base-color;
     }
@@ -148,9 +158,23 @@ $border-radius: 15px;
 
   &__option {
     padding: 16px;
+    @include button-color();
+
+    &.dropdown__option--selected {
+      background-color: $base-button-active-color;
+    }
+
+    &--top {
+      border-radius: $border-radius $border-radius 0 0;
+    }
+
+    &--bottom {
+      border-radius: 0 0 $border-radius $border-radius;
+    }
   }
 
   &__options {
+    width: 260px;
     cursor: pointer;
     background-color: #FFFFFF;
     border-radius: $border-radius;

@@ -1,5 +1,20 @@
+@import "variables";
+
 @mixin size-tablet {
   @media (max-width: 768px){
     @content;
+  }
+}
+
+@mixin button-color {
+  background-color: $base-button-color;
+  transition: background-color $base-button-transition-color-change-time;
+
+  &:hover {
+    background-color: $base-button-hover-color;
+  }
+
+  &:active {
+    background-color: $base-button-active-color;
   }
 }

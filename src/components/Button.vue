@@ -20,14 +20,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/index";
+
 .button {
   border-radius: 15px;
   border: 1px solid #E4EBF4;
   padding: 8px 24px;
-  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  @include button-color();
 }
 </style>
