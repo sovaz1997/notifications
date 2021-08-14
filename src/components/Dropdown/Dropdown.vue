@@ -1,15 +1,15 @@
 <template>
   <div class="dropdown" ref="target">
       <div class="dropdown__top">
-        <div class="dropdown__field" :class="{ 'dropdown__field--selected': selectedOption }" @click="toggleOpen">
-          <Text v-if="selectedOption" :level="1" :color="selectedOption ? 'purple' : 'dark'">{{
+        <div class="dropdown__field" :class="{ 'dropdown__field--selected': modelValue }" @click="toggleOpen">
+          <Text v-if="modelValue" :level="1" :color="modelValue ? 'purple' : 'dark'">{{
               selectedOptionText
             }}
           </Text>
           <Text v-else :level="1" color="light">{{ placeholder }}</Text>
           <ArrowDown></ArrowDown>
         </div>
-        <div class="dropdown__reset-button" v-if="selectedOption" @click="removeSelection">
+        <div class="dropdown__reset-button" v-if="modelValue" @click="removeSelection">
           <Text :level="2" color="light">Сбросить</Text>
         </div>
       </div>
@@ -47,11 +47,16 @@ export default defineComponent({
       default: '',
       type: String as PropType<string>
     },
+    modelValue: {
+      type: [String, null] as PropType<string | null>,
+      default: null,
+    },
   },
+
+  emits: ['update:modelValue'],
 
   data() {
     return {
-      selectedOption: null as string | null,
       opened: false,
       clickListener: 0,
     }
@@ -59,7 +64,7 @@ export default defineComponent({
 
   computed: {
     selectedOptionText() {
-      return this.selectedOption ? this.options?.find((option) => option.key === this.selectedOption)?.value : '';
+      return this.modelValue ? this.options?.find((option) => option.key === this.modelValue)?.value : '';
     }
   },
 
@@ -69,12 +74,12 @@ export default defineComponent({
     },
     selectOption(option: DropdownOption) {
       this.toggleOpen();
-      this.selectedOption = option.key;
+      this.$emit('update:modelValue', option.key);
     },
     removeSelection() {
-      this.selectedOption = null;
+      this.$emit('update:modelValue', null);
     }
-  }
+  },
 });
 </script>
 
@@ -101,7 +106,6 @@ $border-radius: 15px;
       border: 1px solid $purple-base-color;
     }
   }
-
 
   &__top {
     display: flex;

@@ -9,7 +9,7 @@
       </FadeTransition>
     </header>
     <div class="loading-wrapper">
-      <NotificationList v-model:loading="loading"></NotificationList>
+      <NotificationList v-model:loading="loading" @viewed-notifications-count-change="changeNotificationCount"></NotificationList>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default defineComponent({
 
   data() {
     return {
-      changes: 2,
+      changes: 0,
       loading: true,
     };
   },
@@ -37,6 +37,12 @@ export default defineComponent({
       return `${ this.changes } изменени${ pluralize(['е', 'я', 'й'], this.changes) }`;
     },
   },
+
+  methods: {
+    changeNotificationCount(value: number) {
+      this.changes = value;
+    }
+  }
 });
 </script>
 

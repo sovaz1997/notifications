@@ -2,12 +2,12 @@
   <WithLoading :loading="loading">
     <div>
       <div class="notification-list-controls">
-        <Dropdown :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
-        <Refresh class="refresh-button"></Refresh>
+        <Dropdown v-model="notificationType" :options="dropdownOptions" placeholder="Тип уведомления"></Dropdown>
+        <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
       <div class="notification-list">
         <Notification
-            v-for="(notification, i) in notifications"
+            v-for="(notification, i) in filteredNotifications"
             :key="notification.id"
             :id="notification.id"
             :first="notificationIsFirst(i)"
@@ -39,22 +39,26 @@ export default defineComponent({
     return {
       notifications: [] as NotificationModel[],
       dropdownOptions: [] as DropdownOption[],
-      loading: true,
+      loading: false,
+      notificationType: null,
     };
   },
 
-  emits: ['update:loading'],
+  emits: ['update:loading', 'viewedNotificationsCountChange'],
 
   methods: {
     notificationIsFirst(index: number) {
       return index === 0;
     },
+
     notificationIsLast(index: number) {
       return index === this.notifications.length - 1;
     },
+
     async loadNotifications() {
       this.notifications = await api.getNotifications();
     },
+
     async readNotification({ id, unread }: { id: string, unread: boolean }) {
       const updatedNotification = await api.readOrSetUnread(id, unread);
       const replacedNotificationIndex = this.notifications.findIndex((notification) => id === notification.id);
@@ -62,21 +66,39 @@ export default defineComponent({
       if (replacedNotificationIndex !== -1) {
         this.notifications[replacedNotificationIndex] = updatedNotification;
       }
+    },
+
+    async reloadNotifications() {
+      if (!this.loading) {
+        this.loading = true;
+        const notificationTypes = await api.getNotificationTypes();
+        this.dropdownOptions = notificationTypes.map((type) => ({ key: type.id.toString(), value: type.name }));
+        await this.loadNotifications();
+        this.loading = false;
+      }
+    },
+  },
+
+  computed: {
+    filteredNotifications() {
+      const { notificationType } = this;
+      return notificationType
+        ? this.notifications.filter((notification) => notification.type === Number(notificationType))
+        : this.notifications;
     }
   },
 
-  async created() {
-    this.loading = true;
-    const notificationTypes = await api.getNotificationTypes();
-    this.dropdownOptions = notificationTypes.map((type) => ({ key: type.id.toString(), value: type.name }));
-    await this.loadNotifications();
-    this.loading = false;
+  created() {
+    this.reloadNotifications();
   },
 
   watch: {
     loading() {
       this.$emit('update:loading', this.loading);
-    }
+    },
+    filteredNotifications() {
+      this.$emit('viewedNotificationsCountChange', this.filteredNotifications.length);
+    },
   }
 });
 </script>
