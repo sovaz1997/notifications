@@ -36,6 +36,11 @@ import { NotificationModel } from '@/models/notification.model';
 import WithLoading from '@/components/WithLoading.vue';
 import { useLocalstorage } from '@/utils/localstorage';
 
+const [
+    getNotificationType,
+    setNotificationType,
+] = useLocalstorage('filter', null);
+
 export default defineComponent({
   components: { WithLoading, Refresh, Dropdown, Notification },
 
@@ -45,7 +50,6 @@ export default defineComponent({
       dropdownOptions: [] as DropdownOption[],
       loading: false,
       notificationType: null,
-      notificationTypeLocalStorageMethods: useLocalstorage('filter', null),
     };
   },
 
@@ -95,7 +99,7 @@ export default defineComponent({
 
   created() {
     this.reloadNotifications();
-    this.notificationType = this.notificationTypeLocalStorageMethods[0]();
+    this.notificationType = getNotificationType();
   },
 
   watch: {
@@ -106,9 +110,9 @@ export default defineComponent({
       this.$emit('viewedNotificationsCountChange', this.filteredNotifications.length);
     },
     notificationType(value) {
-      this.notificationTypeLocalStorageMethods[1](value);
-    }
-  }
+      setNotificationType(value);
+    },
+  },
 });
 </script>
 
