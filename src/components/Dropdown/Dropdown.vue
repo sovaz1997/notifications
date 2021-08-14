@@ -7,7 +7,7 @@
             }}
           </Text>
           <Text v-else :level="1" color="light">{{ placeholder }}</Text>
-          <ArrowDown></ArrowDown>
+          <ArrowDown :color="color"></ArrowDown>
         </div>
         <div class="dropdown__reset-button" v-if="modelValue" @click="removeSelection">
           <Text :level="2" color="light">Сбросить</Text>
@@ -65,6 +65,9 @@ export default defineComponent({
   computed: {
     selectedOptionText() {
       return this.modelValue ? this.options?.find((option) => option.key === this.modelValue)?.value : '';
+    },
+    color() {
+      return this.modelValue ? '#754EFF' : '#8694A7'
     }
   },
 
