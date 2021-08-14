@@ -86,7 +86,7 @@ $border-radius: 15px;
 
 .notification {
   background: #FFFFFF;
-  padding: 20px 30px;
+  padding: 16px 28px;
   box-sizing: border-box;
   border: 1px solid #E4EBF4;
   display: flex;

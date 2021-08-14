@@ -93,5 +93,6 @@ export default defineComponent({
 
 .notification-list-wrapper {
   flex-grow: 1;
+  padding: 16px 0;
 }
 </style>

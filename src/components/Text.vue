@@ -48,7 +48,7 @@ export default defineComponent({
 .text {
   &--1 {
     font-size: 14px;
-    line-height: 16px;
+    line-height: 24px;
   }
 
   &--2 {
