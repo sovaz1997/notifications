@@ -61,6 +61,7 @@ export default defineComponent({
 
 .header {
   padding: 21px 0 21px 0;
+  height: 60px;
 }
 
 .wrapper {
