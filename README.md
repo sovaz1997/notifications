@@ -1,5 +1,7 @@
 # notifications
 
+Deploy: https://notifications-flax.vercel.app/
+
 ## Project setup
 ```
 npm install
