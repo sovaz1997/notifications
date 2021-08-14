@@ -37,7 +37,7 @@ export default defineComponent({
     productionCategory: { required: true, type: Number },
     first: { default: false, type: Boolean },
     last: { default: false, type: Boolean },
-    unread: { required: true },
+    unread: { required: true, type: Boolean },
   },
 
   async created() {
