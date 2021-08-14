@@ -6,17 +6,19 @@
         <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
       <div class="notification-list">
-        <Notification
-            v-for="(notification, i) in filteredNotifications"
-            :key="notification.id"
-            :id="notification.id"
-            :first="notificationIsFirst(i)"
-            :last="notificationIsLast(i)"
-            :notification-type="notification.type"
-            :production-category="notification.productionCategory"
-            :unread="notification.unread"
-            @toggle-read="readNotification($event)"
-        ></Notification>
+        <transition-group name="notifications" tag="div">
+          <Notification
+              v-for="(notification, i) in filteredNotifications"
+              :key="notification.id"
+              :id="notification.id"
+              :first="notificationIsFirst(i)"
+              :last="notificationIsLast(i)"
+              :notification-type="notification.type"
+              :production-category="notification.productionCategory"
+              :unread="notification.unread"
+              @toggle-read="readNotification($event)"
+          ></Notification>
+        </transition-group>
       </div>
     </div>
   </WithLoading>
@@ -52,7 +54,7 @@ export default defineComponent({
     },
 
     notificationIsLast(index: number) {
-      return index === this.notifications.length - 1;
+      return index === this.filteredNotifications.length - 1;
     },
 
     async loadNotifications() {
@@ -83,8 +85,8 @@ export default defineComponent({
     filteredNotifications() {
       const { notificationType } = this;
       return notificationType
-        ? this.notifications.filter((notification) => notification.type === Number(notificationType))
-        : this.notifications;
+          ? this.notifications.filter((notification) => notification.type === Number(notificationType))
+          : this.notifications;
     }
   },
 
@@ -119,5 +121,20 @@ export default defineComponent({
 
 .refresh-button {
   cursor: pointer;
+}
+
+.notifications-leave-active {
+  transition: none;
+}
+
+.notifications-enter-active {
+  transition: all 1s;
+}
+
+.notifications-enter-from, .notifications-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  width: 100%;
 }
 </style>

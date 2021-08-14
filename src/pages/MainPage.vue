@@ -1,15 +1,18 @@
 <template>
   <div class="wrapper">
     <header class="header">
-      <h1 class="title">Уведомления</h1>
+      <FadeTransition>
+        <h1 class="title" v-if="!loading">Уведомления</h1>
+      </FadeTransition>
       <FadeTransition>
         <Text v-if="!loading" block color="light" :level="2">
           Показано {{ changesText }}
         </Text>
       </FadeTransition>
     </header>
-    <div class="loading-wrapper">
-      <NotificationList v-model:loading="loading" @viewed-notifications-count-change="changeNotificationCount"></NotificationList>
+    <div class="notification-list-wrapper">
+      <NotificationList v-model:loading="loading"
+                        @viewed-notifications-count-change="changeNotificationCount"></NotificationList>
     </div>
   </div>
 </template>
@@ -71,7 +74,7 @@ export default defineComponent({
   flex-direction: column;
 }
 
-.loading-wrapper {
+.notification-list-wrapper {
   flex-grow: 1;
 }
 </style>
