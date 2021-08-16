@@ -57,6 +57,7 @@ export default defineComponent({
       notificationType: null,
       listItemHeight: 0,
       listHeight: 0,
+      welcomeAnimationCopmpleted: false,
     };
   },
 
@@ -111,6 +112,7 @@ export default defineComponent({
       }, () => {
         this.listItemHeight = animationTo.listItemHeight;
         this.listHeight = animationTo.listHeight;
+        this.welcomeAnimationCopmpleted = true;
       });
     }
   },
@@ -141,14 +143,16 @@ export default defineComponent({
       setNotificationType(value);
     },
     'filteredNotifications.length': function (value, prevValue) {
-      const animationFrom = { listHeight: this.listItemHeight * prevValue };
-      const animationTo = { listHeight: this.listItemHeight * value };
+      if (this.welcomeAnimationCopmpleted) {
+        const animationFrom = { listHeight: this.listItemHeight * prevValue };
+        const animationTo = { listHeight: this.listItemHeight * value };
 
-      animate(animationFrom, animationTo, 300, easeOut, (currentState) => {
-        this.listHeight = currentState.listHeight;
-      }, () => {
-        this.listHeight = animationTo.listHeight;
-      });
+        animate(animationFrom, animationTo, 300, easeOut, (currentState) => {
+          this.listHeight = currentState.listHeight;
+        }, () => {
+          this.listHeight = animationTo.listHeight;
+        });
+      }
     }
   },
 });
