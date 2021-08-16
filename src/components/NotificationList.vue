@@ -6,7 +6,7 @@
                   placeholder="Тип уведомления"></Dropdown>
         <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
-      <div class="notification-list">
+      <div class="notification-list" ref="notificationList">
         <transition-group name="notifications" tag="div">
           <Notification
               :height="listItemHeight"
@@ -37,7 +37,6 @@ import Refresh from '@/components/icons/Refresh.vue';
 import { NotificationModel } from '@/models/notification.model';
 import { useLocalstorage } from '@/utils/localstorage';
 import WithLoading from '@/components/WithLoading.vue';
-import FadeTransition from '@/components/transitions/FadeTransition.vue';
 import { animate } from '@/utils/animate';
 import BezierEasing from 'bezier-easing';
 
@@ -94,11 +93,13 @@ export default defineComponent({
     },
 
     welcomeAnimateList() {
-      const animationFrom = { listItemHeight: 120, opacity: 0 };
-      const animationTo = { listItemHeight: 80, opacity: 0 };
+      const animationFrom = { listItemHeight: 120 };
+      const animationTo = { listItemHeight: 80 };
 
       animate(animationFrom, animationTo, 300, BezierEasing(0, 0, 0.58, 1), (currentState) => {
         this.listItemHeight = currentState.listItemHeight;
+      }, () => {
+        this.listItemHeight = animationTo.listItemHeight;
       });
     }
   },
@@ -128,6 +129,16 @@ export default defineComponent({
     notificationType(value) {
       setNotificationType(value);
     },
+    'filteredNotifications.length': function(value) {
+      const notificationListRef = this.$refs.notificationList as HTMLDivElement;
+      if (notificationListRef) {
+        console.log(notificationListRef.offsetWidth);
+        this.$nextTick(() => {
+          const notificationListRef = this.$refs.notificationList as HTMLDivElement;
+          console.log(notificationListRef.offsetWidth);
+        })
+      }
+    }
   },
 });
 </script>

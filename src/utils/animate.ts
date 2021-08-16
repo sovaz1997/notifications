@@ -18,6 +18,7 @@ export const animate = (
   animationTime: number,
   animationFunction: (x: number) => number,
   animationCallback: (currentAnimationState:  Record<string, number>) => void,
+  onAnimationEnd?: () => void,
 ) => {
   const animationStartTime = Date.now();
 
@@ -35,6 +36,8 @@ export const animate = (
         animationCallback(calculateBetween(variablesChangeFrom, variablesChangeTo, animationFunction(animationPosition)));
         animateFrame();
       });
+    } else if (onAnimationEnd) {
+      onAnimationEnd();
     }
   }
   animateFrame();
