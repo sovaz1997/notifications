@@ -46,6 +46,7 @@ import { DropdownOption } from '@/components/Dropdown/models';
 import FadeTransition from '@/components/transitions/FadeTransition.vue';
 import * as CSS from 'csstype';
 import BezierEasing from 'bezier-easing';
+import { animate } from '@/utils/animate';
 
 export default defineComponent({
   components: { FadeTransition, ArrowDown, Text },
@@ -115,33 +116,17 @@ export default defineComponent({
     },
 
     runAnimation() {
-      const fromSize = (this.$refs.dropdownField as HTMLDivElement).offsetWidth;
+      const from = (this.$refs.dropdownField as HTMLDivElement).offsetWidth;
 
       this.$nextTick(() => {
-        const toSize = (this.$refs.dropdownFieldWithReset as HTMLDivElement).offsetWidth;
+        const to = (this.$refs.dropdownFieldWithReset as HTMLDivElement).offsetWidth ;
 
-        const animationTime = 300;
+        const fromGradient = { gradient: 1 - from / to };
+        const toGradient = { gradient: 0 };
 
-        const easing = BezierEasing(0, 0, 0.58, 1);
-
-        const fromGradient = 1 - fromSize / toSize;
-        this.animationGradientScale = fromGradient;
-
-        const startAnimationTime = Date.now();
-        const animation = () => {
-          const curTime = Date.now();
-          const curAnimationTime = curTime - startAnimationTime;
-          const animationPosition = curAnimationTime / animationTime;
-
-          this.animationGradientScale = fromGradient * (1 - easing(animationPosition));
-          if (animationPosition < 1) {
-            window.requestAnimationFrame(animation);
-          } else {
-            this.animationGradientScale = 0;
-          }
-        }
-
-        window.requestAnimationFrame(animation);
+        animate(fromGradient, toGradient, 300, BezierEasing(0, 0, 0.58, 1), (currentState) => {
+          this.animationGradientScale = currentState.gradient;
+        });
       });
     },
 
