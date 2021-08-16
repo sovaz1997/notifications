@@ -9,6 +9,7 @@
       <div class="notification-list">
         <transition-group name="notifications" tag="div">
           <Notification
+              :height="listItemHeight"
               class="notifications__notification"
               v-for="(notification, i) in filteredNotifications"
               :key="notification.id"
@@ -37,6 +38,8 @@ import { NotificationModel } from '@/models/notification.model';
 import { useLocalstorage } from '@/utils/localstorage';
 import WithLoading from '@/components/WithLoading.vue';
 import FadeTransition from '@/components/transitions/FadeTransition.vue';
+import { animate } from '@/utils/animate';
+import BezierEasing from 'bezier-easing';
 
 const [
   getNotificationType,
@@ -52,6 +55,7 @@ export default defineComponent({
       dropdownOptions: [] as DropdownOption[],
       loading: false,
       notificationType: null,
+      listItemHeight: 80,
     };
   },
 
@@ -88,6 +92,15 @@ export default defineComponent({
         this.loading = false;
       }
     },
+
+    welcomeAnimateList() {
+      const animationFrom = { listItemHeight: 120, opacity: 0 };
+      const animationTo = { listItemHeight: 80, opacity: 0 };
+
+      animate(animationFrom, animationTo, 300, BezierEasing(0, 0, 0.58, 1), (currentState) => {
+        this.listItemHeight = currentState.listItemHeight;
+      });
+    }
   },
 
   computed: {
@@ -99,9 +112,10 @@ export default defineComponent({
     }
   },
 
-  created() {
-    this.reloadNotifications();
+  async created() {
+    await this.reloadNotifications();
     this.notificationType = getNotificationType();
+    this.welcomeAnimateList();
   },
 
   watch: {
@@ -122,9 +136,8 @@ export default defineComponent({
 @import "src/assets/styles/index";
 
 .notification-list {
-  & .notifications__notification {
-    margin-bottom: -1px;
-  }
+  border-radius: 15px;
+  border: $base-border
 }
 
 .notification-list-controls {

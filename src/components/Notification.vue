@@ -2,6 +2,7 @@
     <div
         class="notification"
         :class="{ 'notification--first': first, 'notification--last': last, 'notification--unread': unread }"
+        :style="{ height: `${height}px` }"
     >
       <div class="notification__left">
         <component v-if="iconComponent" :is="iconComponent"></component>
@@ -38,6 +39,7 @@ export default defineComponent({
     first: { default: false, type: Boolean },
     last: { default: false, type: Boolean },
     unread: { required: true, type: Boolean },
+    height: { default: 80, type: Number },
   },
 
   async created() {
@@ -82,23 +84,16 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "src/assets/styles/index";
 
-$border-radius: 15px;
-
 .notification {
   background: #FFFFFF;
   padding: 16px 28px;
   box-sizing: border-box;
-  border: 1px solid #E4EBF4;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 80px;
   flex-wrap: wrap;
   gap: 20px;
-
-  @include size-tablet {
-    min-height: 100px;
-  }
+  border-bottom: $base-border;
 
   &--unread {
     background: #FCFDFE;
@@ -114,15 +109,16 @@ $border-radius: 15px;
   }
 
   &--first {
-    border-radius: $border-radius $border-radius 0 0;
+    border-radius: $notification-border-radius $notification-border-radius 0 0;
   }
 
   &--last {
-    border-radius: 0 0 $border-radius $border-radius;
+    border-radius: 0 0 $notification-border-radius $notification-border-radius;
+    border-bottom: 0;
   }
 }
 
 .notification--first.notification--last {
-  border-radius: $border-radius $border-radius;
+  border-radius: $notification-border-radius $notification-border-radius;
 }
 </style>
