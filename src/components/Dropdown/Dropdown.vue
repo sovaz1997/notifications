@@ -45,8 +45,7 @@ import ArrowDown from '@/components/icons/ArrowDown.vue';
 import { DropdownOption } from '@/components/Dropdown/models';
 import FadeTransition from '@/components/transitions/FadeTransition.vue';
 import * as CSS from 'csstype';
-import BezierEasing from 'bezier-easing';
-import { animate } from '@/utils/animate';
+import { animate, easeOut } from '@/utils/animate';
 
 export default defineComponent({
   components: { FadeTransition, ArrowDown, Text },
@@ -124,7 +123,7 @@ export default defineComponent({
         const fromGradient = { gradient: 1 - from / to };
         const toGradient = { gradient: 0 };
 
-        animate(fromGradient, toGradient, 300, BezierEasing(0, 0, 0.58, 1), (currentState) => {
+        animate(fromGradient, toGradient, 300, easeOut, (currentState) => {
           this.animationGradientScale = currentState.gradient;
         });
       });
@@ -178,7 +177,7 @@ $border-radius: 15px;
   &__field {
     width: fit-content;
     cursor: pointer;
-    border: 1px solid #E4EBF4;
+    border: $base-border;
     border-radius: $border-radius;
     padding: 12px 20px;
     display: flex;
@@ -229,7 +228,7 @@ $border-radius: 15px;
     transform: translate(0, 100%);
     z-index: 99;
     box-shadow: 0 10px 20px rgba(186, 197, 211, 0.15);
-    border: 1px solid #E4EBF4;
+    border: $base-border;
   }
 }
 

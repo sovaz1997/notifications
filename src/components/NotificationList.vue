@@ -6,22 +6,20 @@
                   placeholder="Тип уведомления"></Dropdown>
         <Refresh @click="reloadNotifications()" class="refresh-button"></Refresh>
       </div>
-      <div class="notification-list" ref="notificationList">
-        <transition-group name="notifications" tag="div">
-          <Notification
-              :height="listItemHeight"
-              class="notifications__notification"
-              v-for="(notification, i) in filteredNotifications"
-              :key="notification.id"
-              :id="notification.id"
-              :first="notificationIsFirst(i)"
-              :last="notificationIsLast(i)"
-              :notification-type="notification.type"
-              :production-category="notification.productionCategory"
-              :unread="notification.unread"
-              @toggle-read="readNotification($event)"
-          ></Notification>
-        </transition-group>
+      <div class="notification-list" ref="notificationList" :style="{ height: `${ listHeight }px` }">
+        <Notification
+            :height="listItemHeight"
+            class="notifications__notification"
+            v-for="(notification, i) in filteredNotifications"
+            :key="notification.id"
+            :id="notification.id"
+            :first="notificationIsFirst(i)"
+            :last="notificationIsLast(i)"
+            :notification-type="notification.type"
+            :production-category="notification.productionCategory"
+            :unread="notification.unread"
+            @toggle-read="readNotification($event)"
+        ></Notification>
       </div>
     </div>
   </WithLoading>
@@ -37,13 +35,16 @@ import Refresh from '@/components/icons/Refresh.vue';
 import { NotificationModel } from '@/models/notification.model';
 import { useLocalstorage } from '@/utils/localstorage';
 import WithLoading from '@/components/WithLoading.vue';
-import { animate } from '@/utils/animate';
-import BezierEasing from 'bezier-easing';
+import { animate, easeOut } from '@/utils/animate';
 
 const [
   getNotificationType,
   setNotificationType,
 ] = useLocalstorage('filter', null);
+
+
+const BEFORE_ANIMATION_LIST_ITEM_HEIGHT = 120;
+const AFTER_ANIMATION_LIST_ITEM_HEIGHT = 80;
 
 export default defineComponent({
   components: { WithLoading, Refresh, Dropdown, Notification },
@@ -54,7 +55,8 @@ export default defineComponent({
       dropdownOptions: [] as DropdownOption[],
       loading: false,
       notificationType: null,
-      listItemHeight: 80,
+      listItemHeight: 0,
+      listHeight: 0,
     };
   },
 
@@ -93,13 +95,22 @@ export default defineComponent({
     },
 
     welcomeAnimateList() {
-      const animationFrom = { listItemHeight: 120 };
-      const animationTo = { listItemHeight: 80 };
+      const animationFrom = {
+        listItemHeight: BEFORE_ANIMATION_LIST_ITEM_HEIGHT,
+        listHeight: BEFORE_ANIMATION_LIST_ITEM_HEIGHT * this.filteredNotifications.length,
+      };
 
-      animate(animationFrom, animationTo, 300, BezierEasing(0, 0, 0.58, 1), (currentState) => {
+      const animationTo = {
+        listItemHeight: AFTER_ANIMATION_LIST_ITEM_HEIGHT,
+        listHeight: AFTER_ANIMATION_LIST_ITEM_HEIGHT * this.filteredNotifications.length,
+      };
+
+      animate(animationFrom, animationTo, 300, easeOut, (currentState) => {
         this.listItemHeight = currentState.listItemHeight;
+        this.listHeight = currentState.listHeight;
       }, () => {
         this.listItemHeight = animationTo.listItemHeight;
+        this.listHeight = animationTo.listHeight;
       });
     }
   },
@@ -129,15 +140,15 @@ export default defineComponent({
     notificationType(value) {
       setNotificationType(value);
     },
-    'filteredNotifications.length': function(value) {
-      const notificationListRef = this.$refs.notificationList as HTMLDivElement;
-      if (notificationListRef) {
-        console.log(notificationListRef.offsetWidth);
-        this.$nextTick(() => {
-          const notificationListRef = this.$refs.notificationList as HTMLDivElement;
-          console.log(notificationListRef.offsetWidth);
-        })
-      }
+    'filteredNotifications.length': function (value, prevValue) {
+      const animationFrom = { listHeight: this.listItemHeight * prevValue };
+      const animationTo = { listHeight: this.listItemHeight * value };
+
+      animate(animationFrom, animationTo, 300, easeOut, (currentState) => {
+        this.listHeight = currentState.listHeight;
+      }, () => {
+        this.listHeight = animationTo.listHeight;
+      });
     }
   },
 });
@@ -148,7 +159,8 @@ export default defineComponent({
 
 .notification-list {
   border-radius: 15px;
-  border: $base-border
+  border: $base-border;
+  overflow: hidden;
 }
 
 .notification-list-controls {
@@ -162,20 +174,5 @@ export default defineComponent({
 
 .refresh-button {
   cursor: pointer;
-}
-
-.notifications-leave-active {
-  transition: none;
-}
-
-.notifications-enter-active {
-  transition: all 1s ease-out;
-}
-
-.notifications-enter-from, .notifications-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-  position: relative;
-  width: 100%;
 }
 </style>

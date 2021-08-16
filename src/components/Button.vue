@@ -24,7 +24,7 @@ export default defineComponent({
 
 .button {
   border-radius: 15px;
-  border: 1px solid #E4EBF4;
+  border: $base-border;
   padding: 8px 24px;
   display: flex;
   align-items: center;

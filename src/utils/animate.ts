@@ -1,3 +1,5 @@
+import BezierEasing from 'bezier-easing';
+
 const calculateBetweenValue = (a: number, b: number, state: number) => {
   return a * (1 - state) + b * state;
 }
@@ -42,3 +44,5 @@ export const animate = (
   }
   animateFrame();
 }
+
+export const easeOut = BezierEasing(0, 0, 0.58, 1);
