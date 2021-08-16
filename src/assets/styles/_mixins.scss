@@ -8,7 +8,7 @@
 
 @mixin button-color {
   background-color: $base-button-color;
-  transition: background-color $base-button-transition-color-change-time;
+  transition: background-color $base-button-transition-color-change-time ease-out;
 
   &:hover {
     background-color: $base-button-hover-color;

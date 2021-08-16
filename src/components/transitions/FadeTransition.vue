@@ -7,7 +7,7 @@
 <style lang="scss" scoped>
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .6s;
+  transition: opacity .6s ease-out;
 }
 
 .fade-enter-from, .fade-leave-to {

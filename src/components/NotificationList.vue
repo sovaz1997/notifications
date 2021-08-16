@@ -145,7 +145,7 @@ export default defineComponent({
 }
 
 .notifications-enter-active {
-  transition: all 1s;
+  transition: all 1s ease-out;
 }
 
 .notifications-enter-from, .notifications-leave-to {

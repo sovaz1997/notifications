@@ -35,7 +35,7 @@ export default defineComponent({
 }
 
 .fade-only-on-show-enter-active {
-  transition: opacity .6s;
+  transition: opacity .6s ease-out;
 }
 
 .fade-only-on-show-enter-from, .fade-only-on-show-leave-to {
